@@ -1,0 +1,7 @@
+Revision history for DBIx-Class-InflateColumn-Object-Enum
+
+0.01    Oct 23rd 2008
+        register_column implemented
+	test database schema implemented
+	wrote base TAP tests
+
