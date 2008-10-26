@@ -12,11 +12,11 @@ DBIx::Class::InflateColumn::Object::Enum - Allows a DBIx::Class user to define a
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 
 =head1 SYNOPSIS
@@ -35,9 +35,17 @@ to define Enumuration columns via Object::Enum
     __PACKAGE__->add_columns(
         color => {
             data_type => 'varchar',
-            is_nullable => 1,
             is_enum => 1,
-            values => [qw/red green blue/]
+            extra => {
+                list => [qw/red green blue/]
+            }
+        }
+        color_native => { # works inline with native enum type
+            data_type => 'enum',
+            is_enum => 1,
+            extra => {
+                list => [qw/red green blue/]
+            }
         }
     );
     
@@ -73,21 +81,31 @@ sub register_column {
     
     return unless defined $info->{is_enum} and $info->{is_enum};
     
-    croak("Object::Enum column '$column' must define 'values' property")
-        unless defined  $info->{values};
+    croak("Object::Enum column '$column' must define 'list' property")
+        unless (
+            defined $info->{extra}
+            and ref $info->{extra}  eq 'HASH'
+            and defined $info->{extra}->{list}
+        );
         
     croak("'$column' is an Object::Enum column but 'values' property is not an ARRAY reference")
-        unless ref $info->{values} eq 'ARRAY';
+        unless ref $info->{extra}->{list} eq 'ARRAY';
     
-    my $values = $info->{values};
+    my $values = $info->{extra}->{list};
+    my %values = map {$_=>1} @{$values};
+    
+    if ( defined($info->{default_value}) && !exists $values{$info->{default_value}}) {
+        push(@{$values},$info->{default_value});
+        $values->{$info->{default_value}} = 1;
+    }
     
     self->inflate_column(
         $column => {
             inflate => sub {
-                return Object::Enum->new({
-                  values => $values,
-                  value => shift
-                });
+                my $val = shift;
+                my $e = Object::Enum->new({values=>$values});
+                $e->value($val) if $val and exists $values{$val};
+                return $e;
             },
             deflate => sub {
                 return shift->value

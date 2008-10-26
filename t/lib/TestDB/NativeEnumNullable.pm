@@ -1,4 +1,4 @@
-package TestDB::Test;
+package TestDB::NativeEnumNullable;
 
 use strict;
 use warnings;
@@ -10,24 +10,20 @@ __PACKAGE__->load_components(qw/
     PK::Auto
     Core
 /);
-__PACKAGE__->table('test');
+__PACKAGE__->table('nen');
 __PACKAGE__->add_columns(
     id => {
         data_type => 'number',
         is_auto_increment => 1,
         is_nullable => 0
     },
-    name => {
-        data_type => 'varchar',
-        size => '64',
-        is_nullable => 0
-    },
-    color => {
-        data_type => 'varchar',
-        is_nullable => 1,
-        size => '64',
+    enum => {
+        data_type => 'enum',
         is_enum => 1,
-        values => [qw/red green blue]/]
+        is_nullable => 1,
+        extra => {
+            list => [qw/red green blue/]
+        },
     }
 );
 __PACKAGE__->set_primary_key('id');

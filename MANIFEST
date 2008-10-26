@@ -20,6 +20,9 @@ META.yml
 t/00-load.t
 t/01-object-enum.t
 t/lib/TestDB.pm
-t/lib/TestDB/Test.pm
+t/lib/TestDB/NativeEnumNoneNullable.pm
+t/lib/TestDB/NativeEnumNullable.pm
+t/lib/TestDB/VarcharEnumNoneNullable.pm
+t/lib/TestDB/VarcharEnumNullable.pm
 t/pod-coverage.t
 t/pod.t
