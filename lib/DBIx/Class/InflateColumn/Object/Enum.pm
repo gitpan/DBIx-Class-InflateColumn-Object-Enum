@@ -12,11 +12,11 @@ DBIx::Class::InflateColumn::Object::Enum - Allows a DBIx::Class user to define a
 
 =head1 VERSION
 
-Version 0.02
+Version 0.03
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 
 =head1 SYNOPSIS
@@ -81,14 +81,14 @@ sub register_column {
     
     return unless defined $info->{is_enum} and $info->{is_enum};
     
-    croak("Object::Enum column '$column' must define 'list' property")
+    croak("Object::Enum '$column' missing 'extra => { list => [] }' column configuration")
         unless (
             defined $info->{extra}
             and ref $info->{extra}  eq 'HASH'
             and defined $info->{extra}->{list}
         );
         
-    croak("'$column' is an Object::Enum column but 'values' property is not an ARRAY reference")
+    croak("Object::Enum '$column' value list (extra => { list => [] }) must be an ARRAY reference")
         unless ref $info->{extra}->{list} eq 'ARRAY';
     
     my $values = $info->{extra}->{list};
