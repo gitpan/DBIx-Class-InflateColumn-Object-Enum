@@ -1,5 +1,7 @@
 Revision history for DBIx-Class-InflateColumn-Object-Enum
 
+0.04    Jan 27th 2009
+	- Removed self dependency 
 0.03    Nov 11th 2008
 	- Modified error verbage as per request from mst
 	- Changed ChangeLog sorting from latest -> oldest

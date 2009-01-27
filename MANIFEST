@@ -1,4 +1,15 @@
+blib/arch/.exists
+blib/arch/auto/DBIx/Class/InflateColumn/Object/Enum/.exists
+blib/bin/.exists
+blib/lib/auto/DBIx/Class/InflateColumn/Object/Enum/.exists
+blib/lib/DBIx/Class/InflateColumn/Object/.exists
+blib/lib/DBIx/Class/InflateColumn/Object/Enum.pm
+blib/man1/.exists
+blib/man3/.exists
+blib/script/.exists
 Changes
+DBIx-Class-InflateColumn-Object-Enum-0.03.tar.gz
+DBIx-Class-InflateColumn-Object-Enum-0.04.tar.gz
 inc/Module/AutoInstall.pm
 inc/Module/Install.pm
 inc/Module/Install/AutoInstall.pm
@@ -17,6 +28,7 @@ Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
 META.yml
+pm_to_blib
 t/00-load.t
 t/01-object-enum.t
 t/lib/TestDB.pm
