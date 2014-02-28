@@ -1,5 +1,5 @@
 package DBIx::Class::InflateColumn::Object::Enum;
-
+$DBIx::Class::InflateColumn::Object::Enum::VERSION = '0.05'; # TRIAL
 use warnings;
 use strict;
 use Carp qw/croak confess/;
@@ -15,7 +15,9 @@ Version 0.03
 
 =cut
 
-our $VERSION = '0.04';
+# Dist::Zill should handle this now
+# ABSTRACT:  Allows a DBIx::Class user to define a Object::Enum column
+#our $VERSION = '0.04';
 
 
 =head1 SYNOPSIS
