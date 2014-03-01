@@ -12,3 +12,6 @@ t/lib/TestDB/NativeEnumNoneNullable.pm
 t/lib/TestDB/NativeEnumNullable.pm
 t/lib/TestDB/VarcharEnumNoneNullable.pm
 t/lib/TestDB/VarcharEnumNullable.pm
+t/lib/TestDB/WithBadDefaultValue.pm
+t/regres/rt_74086.t
+t/regres/rt_93432.t

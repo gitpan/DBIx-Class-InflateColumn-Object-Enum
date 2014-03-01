@@ -1,4 +1,4 @@
-use Test::More tests => 33;
+use Test::More tests => 24;
 
 BEGIN {
 	use lib 't/lib';
@@ -35,13 +35,14 @@ undef $rs;
 eval(q/$db->resultset('VarcharEnumNoneNullable')->create({id=>1})/);
 ok(defined($@),'VarcharEnumNoneNullable(null enum): create with null enum failed as expected'); # test 13
 
-$rs = $db->resultset('VarcharEnumNoneNullable')->create({id=>2,enum=>'none'});
-ok(defined($rs),'VarcharEnumNoneNullable(invalid enum): create with invalid enum returns row as expected'); # test 14
-_check_column($rs->enum,$rs->result_source->source_name.'(invalid enum)'); # tests 15 thru 21
+# commented tests now conflict with expected behavior
+#$rs = $db->resultset('VarcharEnumNoneNullable')->create({id=>2,enum=>'none'});
+#ok(defined($rs),'VarcharEnumNoneNullable(invalid enum): create with invalid enum returns row as expected'); # test 14
+#_check_column($rs->enum,$rs->result_source->source_name.'(invalid enum)'); # tests 15 thru 21
 
-undef $rs;
-$rs = $db->resultset('VarcharEnumNoneNullable')->create({id=>3,enum=>'none'});
-ok($rs->enum->value ne 'none','VarcharEnumNoneNullable(invalid enum) value return undef on valid as expected'); # test 22
+#undef $rs;
+#$rs = $db->resultset('VarcharEnumNoneNullable')->create({id=>3,enum=>'none'});
+#ok($rs->enum->value ne 'none','VarcharEnumNoneNullable(invalid enum) value return undef on valid as expected'); # test 22
 
 undef $rs;
 $rs = $db->resultset('VarcharEnumNoneNullable')->create({id=>4,enum=>'red'});

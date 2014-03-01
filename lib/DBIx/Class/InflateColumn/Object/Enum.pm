@@ -1,5 +1,5 @@
 package DBIx::Class::InflateColumn::Object::Enum;
-$DBIx::Class::InflateColumn::Object::Enum::VERSION = '0.05'; # TRIAL
+$DBIx::Class::InflateColumn::Object::Enum::VERSION = '0.05';
 use warnings;
 use strict;
 use Carp qw/croak confess/;
@@ -95,18 +95,21 @@ sub register_column {
     
     my $values = $info->{extra}->{list};
     my %values = map {$_=>1} @{$values};
-    
-    if ( defined($info->{default_value}) && !exists $values{$info->{default_value}}) {
-        push(@{$values},$info->{default_value});
-        $values->{$info->{default_value}} = 1;
-    }
-    
+
+    push(@{$values},$info->{default_value})
+        if defined($info->{default_value})
+        && !exists $values{$info->{default_value}};
+
+    push(@{$values}, undef)
+        if defined($info->{is_nullable})
+        && $info->{is_nullable};
+
     $self->inflate_column(
         $column => {
             inflate => sub {
                 my $val = shift;
                 my $e = Object::Enum->new({values=>$values});
-                $e->value($val) if $val and exists $values{$val};
+                $e->value($val);
                 return $e;
             },
             deflate => sub {
