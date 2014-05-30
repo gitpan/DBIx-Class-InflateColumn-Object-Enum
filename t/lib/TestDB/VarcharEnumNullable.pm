@@ -21,6 +21,7 @@ __PACKAGE__->add_columns(
         data_type => 'varchar',
         is_enum => 1,
         is_nullable => 1,
+        default_value => 'red',
         extra => {
             list => [qw/red green blue/]
         },

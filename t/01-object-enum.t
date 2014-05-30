@@ -28,7 +28,7 @@ $rs = $db->resultset('VarcharEnumNullable')->create({id=>0});
 ok(defined($rs),'VarcharEnumNullable: create returned as expected'); # test 3
 ok(!defined($rs->enum),'VarcharEnumNullable: enum column is null as expected'); # test 4
 
-$rs->enum(''); # initialize inflated object for nullable
+$rs->enum('red');
 _check_column($rs->enum,$rs->result_source->source_name); # tests 5 thru 12
 
 undef $rs;
@@ -53,7 +53,7 @@ $rs = $db->resultset('NativeEnumNullable')->create({id=>5});
 ok(defined($rs),'NativeEnumNullable: create returned as expected'); # test 24
 ok(!defined($rs->enum),'NativeEnumNullable: enum column is null as expected'); # test 25
 
-$rs->enum(''); # initialize inflated object for nullable
+$rs->enum('red'); # initialize inflated object for nullable
 _check_column($rs->enum,$rs->result_source->source_name); # tests 26 thru 32
 
 undef $rs;

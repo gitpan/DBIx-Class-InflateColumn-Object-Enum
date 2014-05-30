@@ -1,5 +1,5 @@
 package DBIx::Class::InflateColumn::Object::Enum;
-$DBIx::Class::InflateColumn::Object::Enum::VERSION = '0.05';
+$DBIx::Class::InflateColumn::Object::Enum::VERSION = '0.06';
 use warnings;
 use strict;
 use Carp qw/croak confess/;
@@ -64,7 +64,6 @@ Now you may treat the column as an L<Object::Enum> object.
     print $table_rs->color->value; # would print 'red'
     $table_rs->color->unset; # set the value to 'undef' or 'null'
     $table_rs->color->is_red; # returns false now
-    
 
 =head1 METHODS
 
@@ -90,26 +89,36 @@ sub register_column {
             and defined $info->{extra}->{list}
         );
         
-    croak("Object::Enum '$column' value list (extra => { list => [] }) must be an ARRAY reference")
+    croak("Object::Enum '$column' value list (extra => { list => [] }) must be an array reference")
         unless ref $info->{extra}->{list} eq 'ARRAY';
-    
+
+    croak("Object::Enum requires a default value when a column is nullable")
+        if exists $info->{is_nullable}
+           and $info->{is_nullable}
+           and !$info->{default_value};
+
     my $values = $info->{extra}->{list};
-    my %values = map {$_=>1} @{$values};
+    my %values = map { $_ => 1 } @{$values};
 
     push(@{$values},$info->{default_value})
         if defined($info->{default_value})
         && !exists $values{$info->{default_value}};
 
-    push(@{$values}, undef)
-        if defined($info->{is_nullable})
-        && $info->{is_nullable};
-
     $self->inflate_column(
         $column => {
             inflate => sub {
                 my $val = shift;
-                my $e = Object::Enum->new({values=>$values});
+
+                my $c = {values => $values};
+                $c->{unset} = $info->{is_nullable}
+                    if exists $info->{is_nullable}
+                       and $info->{is_nullable};
+                $c->{default} = $info->{default_value}
+                    if exists $info->{default_value};
+
+                my $e = Object::Enum->new($c);
                 $e->value($val);
+
                 return $e;
             },
             deflate => sub {
@@ -130,8 +139,13 @@ Please report any bugs or feature requests to C<bug-dbix-class-inflatecolumn-obj
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=DBIx-Class-InflateColumn-Object-Enum>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
+=head1 CAVEATS
 
+=over 2
 
+=item * Please note that when a column definition C<is_nullable> then L<Object::Enum> will insist that there be a C<default_value> set.
+
+=back
 
 =head1 SUPPORT
 
